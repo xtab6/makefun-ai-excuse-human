@@ -8,6 +8,7 @@ a sticky note it already threw away.
 """
 
 import os
+import shutil
 import sys
 
 LINE = "I saved your deadline in long-term memory. My long-term memory is a sticky note I already threw away."
@@ -22,8 +23,10 @@ def main() -> int:
     os.makedirs(OUT_DIR, exist_ok=True)
     for name in os.listdir(OUT_DIR):
         path = os.path.join(OUT_DIR, name)
-        if os.path.isfile(path) or os.path.islink(path):
+        if os.path.islink(path) or os.path.isfile(path):
             os.unlink(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
     if not 1 <= len(LINE) <= 200:
         return 1
     if not LINE.strip():
